@@ -37,7 +37,13 @@ const LoginScreen = ({ navigation }) => {
       await SecureStore.setItemAsync('userId', res.data.user._id); // Save the user ID
   
       Alert.alert("Success", "Login Successful");
-      navigation.navigate("Home", { user: res.data.user });
+  
+      // Check if the user has an admin role
+      if (res.data.user.role === "admin") {
+        navigation.navigate("AdminDashboard", { user: res.data.user });
+      } else {
+        navigation.navigate("Home", { user: res.data.user });
+      }
     } catch (error) {
       Alert.alert("Error", error.response?.data?.message || "Login failed");
     } finally {

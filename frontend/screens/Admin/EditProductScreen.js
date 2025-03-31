@@ -21,6 +21,7 @@ const EditProfileScreen = ({ navigation, route }) => {
   const user = route?.params?.user || {
     _id: "",
     name: "",
+    email: "",
     profilePic: null,
     address: "",
     phoneNumber: ""
@@ -72,7 +73,7 @@ const EditProfileScreen = ({ navigation, route }) => {
   };
 
   const handleSubmit = async () => {
-    if (!name) {
+    if (!name) { // Removed email from required fields
       Alert.alert("Error", "Name is required.");
       return;
     }
@@ -131,13 +132,14 @@ const EditProfileScreen = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
 
+        <Text style={styles.emailText}>{user.email}</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Name"
           value={name}
           onChangeText={setName}
         />
-     
         <TextInput
           style={styles.input}
           placeholder="Address"
@@ -202,13 +204,19 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 8,
   },
+  emailText: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 20,
+    textAlign: "center",
+  },
   input: {
     height: 50,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 15,
-    marginBottom: 10,
+    marginBottom: 15,
     fontSize: 16,
   },
   saveButton: {

@@ -17,23 +17,34 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import API_KEY from "../../config";
 
-
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async () => {
     if (!name || !email || !password) {
-      Alert.alert("Missing Fields", "Please fill in all fields");
+      Alert.alert("Missing Fields", "Please fill in all required fields");
       return;
     }
-    
+
     try {
       setIsLoading(true);
-      await axios.post(`${API_KEY}/register`, { name, email, password }); // Use API_KEY here
+
+      const payload = {
+        name,
+        email,
+        password,
+        address,
+        phoneNumber,
+        role: "user",
+      };
+
+      await axios.post(`${API_KEY}/register`, payload);
       Alert.alert("Success", "Registration Successful");
       navigation.navigate("Login");
     } catch (error) {
@@ -73,6 +84,7 @@ const RegisterScreen = ({ navigation }) => {
               placeholderTextColor="#6c757d"
               value={name}
               onChangeText={setName}
+              autoCapitalize="words"
             />
           </View>
 
@@ -106,6 +118,29 @@ const RegisterScreen = ({ navigation }) => {
                 color="#6c757d" 
               />
             </TouchableOpacity>
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Ionicons name="location-outline" size={20} color="#6c757d" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Address (Optional)"
+              placeholderTextColor="#6c757d"
+              value={address}
+              onChangeText={setAddress}
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Ionicons name="call-outline" size={20} color="#6c757d" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number (Optional)"
+              placeholderTextColor="#6c757d"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              keyboardType="phone-pad"
+            />
           </View>
 
           <TouchableOpacity
